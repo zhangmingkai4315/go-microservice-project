@@ -1,0 +1,37 @@
+box: golang
+
+build:
+  steps:
+    - setup-go-workspace:
+      package-dir: github.com/zhangmingkai4315/go-microservice-project
+    - script:
+        name: env
+        code: env
+
+    - script:
+        name: go get
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          go version
+          go get -u github.com/golang/dep/cmd/dep
+          export PATH=$WERCKER_SOURCE_DIR/bin:$PATH
+          dep ensure
+    - script:
+        name: go build
+        code: CGO_ENABLED=0 go build -a -ldflags '-s' -installsuffix cgo -o app .
+    - script:
+        name: go test
+        code: go test -v ./...
+    - script:
+        name: copy files to wercker output
+        code: cp -R ./ ${WERCKER_OUTPUT_DIR}
+deploy:
+ steps:
+   - internal/docker-push:
+       username: $USERNAME
+       password: $PASSWORD
+       tag: latest
+       cmd: /pipeline/source/app
+       ports: "3000"
+       repository: zhangmingkai4315/go-microservice-project
+       registry: https://registry.hub.docker.com
