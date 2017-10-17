@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+	"github.com/cloudnativego/cfmgo"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
@@ -13,16 +15,20 @@ func NewServer() *negroni.Negroni {
 	})
 	n := negroni.Classic()
 	mx := mux.NewRouter()
-	repo := initRepository(true, "")
+	// repo := initRepository(true, "")
+	repo := initRepository(false, &dbConfig{HostURI: "mongodb://127.0.0.1:27017/gogo", DBCollectionName: "matches"})
 	initRoutes(mx, formatter, repo)
 	n.UseHandler(mx)
 	return n
 }
-func initRepository(memoryType bool, databaseURL string) (repo matchRepository) {
+func initRepository(memoryType bool, db *dbConfig) (repo matchRepository) {
 	if memoryType == true {
 		return NewInMemoryRepository()
 	} else {
-		return nil
+		matchCollection := cfmgo.Connect(cfmgo.NewCollectionDialer, db.HostURI, db.DBCollectionName)
+		fmt.Printf("Connecting to MongoDB service: %s...\n", db.HostURI)
+		repo = NewMongoMatchRepository(matchCollection)
+		return repo
 	}
 }
 func initRoutes(mx *mux.Router, formatter *render.Render, repo matchRepository) {

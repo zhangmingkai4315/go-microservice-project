@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/cloudnativego/cfmgo"
+  packages = [".","params"]
+  revision = "35605f2df87ae242b8c1fdef3c7ebc07916e339b"
+
+[[projects]]
   name = "github.com/codegangsta/negroni"
   packages = ["."]
   revision = "fde5e16d32adc7ad637e9cd9ad21d4ebc6192535"
@@ -31,9 +37,15 @@
   packages = ["."]
   revision = "32bf1ea2a39e4e796d9040b5cf235258cee978c1"
 
+[[projects]]
+  branch = "v2"
+  name = "gopkg.in/mgo.v2"
+  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
+  revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3bc784e07f2263a61995e2b70e3db432c5fe1666eb7894b26e39ac066b429042"
+  inputs-digest = "9193ea9978ce4e635ddfa9673b19f04a84441bf2ce7fc2f6745daf8b9b65e727"
   solver-name = "gps-cdcl"
   solver-version = 1

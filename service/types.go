@@ -2,6 +2,8 @@ package service
 
 import (
 	engine "github.com/zhangmingkai4315/go-microservice-project/engine"
+	"gopkg.in/mgo.v2/bson"
+	"net/url"
 )
 
 type newMatchRequest struct {
@@ -65,4 +67,17 @@ type matchRepository interface {
 	addMatch(match engine.Match) (err error)
 	getMatches() (matches []engine.Match, err error)
 	getMatch(id string) (match engine.Match, err error)
+}
+
+type RequestParams struct {
+	RawQuery url.Values `json:"raw_query"`
+	Q        bson.M     `json:"selector"`
+	S        bson.M     `json:"scope"`
+	L        int        `json:"limit"`
+	F        int        `json:"offset"`
+}
+
+type dbConfig struct {
+	HostURI          string
+	DBCollectionName string
 }
