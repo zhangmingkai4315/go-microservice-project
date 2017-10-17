@@ -15,8 +15,8 @@ func NewServer() *negroni.Negroni {
 	})
 	n := negroni.Classic()
 	mx := mux.NewRouter()
-	// repo := initRepository(true, "")
-	repo := initRepository(false, &dbConfig{HostURI: "mongodb://127.0.0.1:27017/gogo", DBCollectionName: "matches"})
+	repo := initRepository(true, nil)
+	// repo := initRepository(false, &dbConfig{HostURI: "mongodb://127.0.0.1:27017/gogo", DBCollectionName: "matches"})
 	initRoutes(mx, formatter, repo)
 	n.UseHandler(mx)
 	return n
